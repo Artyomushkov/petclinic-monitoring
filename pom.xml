@@ -44,10 +44,15 @@
 
   <distributionManagement>
     <repository>
-  	  <id>local-repository</id>
-      <name>local-repository</name>
-  		<url>${local-repository}</url>
-  	</repository>
+      <id>nexus</id>
+      <name>Releases</name>
+      <url>http://localhost:8082/repository/maven-releases</url>
+    </repository>
+    <snapshotRepository>
+      <id>nexus</id>
+      <name>Snapshot</name>
+      <url>http://localhost:8082/repository/maven-snapshots</url>
+    </snapshotRepository>
   </distributionManagement>
   
   <dependencies>
