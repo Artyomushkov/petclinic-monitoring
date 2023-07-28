@@ -308,7 +308,7 @@
           <configuration>
                 <failsOnError>false</failsOnError>
                 <failOnViolation>false</failOnViolation>
-                <violationSeverity>warning</violationSeverity>
+                <violationSeverity>error</violationSeverity>
             </configuration>
           <reportSets>
             <reportSet>
