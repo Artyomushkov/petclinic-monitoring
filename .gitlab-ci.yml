@@ -1,0 +1,17 @@
+variables:
+  MAVEN_CLI_OPTS: "--batch-mode"
+  MAVEN_OPTS: "-Dmaven.repo.local=.m2/repository"
+
+cache:
+  paths:
+    - .m2/repository/
+
+checkstyle:
+    stage: test
+    image: maven:3.8.5-openjdk-17
+    script:
+        - mvn $MAVEN_CLI_OPTS checkstyle:checkstyle
+    artifacts:
+        paths:
+            - /target/site/checkstyle-result.xml
+
