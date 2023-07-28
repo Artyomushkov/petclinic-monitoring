@@ -54,7 +54,7 @@ image_to_main:
     - docker:24.0-dind
   script:
     - docker login -u $REGISTRY_LOGIN -p $REGISTRY_TOKEN registry.gitlab.com
-    - docker build -f $DOCKERFILE -t $IMAGE_BASE/mr:$CI_COMMIT_SHORT_SHA .
+    - docker build -f $DOCKERFILE -t $IMAGE_BASE/main:$CI_COMMIT_SHORT_SHA .
     - docker push $IMAGE_BASE/main:$CI_COMMIT_SHORT_SHA
   only:
     - main
