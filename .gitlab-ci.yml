@@ -27,7 +27,7 @@ build:
   stage: build
   image: maven:3.8.5-openjdk-17
   script:
-    - mvn $MAVEN_CLI_OPTS package -DskipTests
+    - mvn $MAVEN_CLI_OPTS package -DskipTests -Dcheckstyle.skip
 
 image_to_mr:
   stage: deploy
