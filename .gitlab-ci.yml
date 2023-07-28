@@ -1,17 +1,44 @@
 variables:
   MAVEN_CLI_OPTS: "--batch-mode"
   MAVEN_OPTS: "-Dmaven.repo.local=.m2/repository"
+  DOCKERFILE: "multistage.Dockerfile"
+  IMAGE_BASE: "registry.gitlab.com/test3602031/petclinic_learning"
 
 cache:
   paths:
     - .m2/repository/
 
 checkstyle:
-    stage: test
-    image: maven:3.8.5-openjdk-17
-    script:
-        - mvn $MAVEN_CLI_OPTS checkstyle:checkstyle
-    artifacts:
-        paths:
-            - target/checkstyle-result.xml
+  stage: test
+  image: maven:3.8.5-openjdk-17
+  script:
+    - mvn $MAVEN_CLI_OPTS checkstyle:checkstyle
+  artifacts:
+    paths:
+      - target/checkstyle-result.xml
+
+test:
+  stage: test
+  image: maven:3.8.5-openjdk-17
+  script:
+    - mvn $MAVEN_CLI_OPTS test
+  
+build:
+  stage: build
+  image: maven:3.8.5-openjdk-17
+  script:
+    - mvn $MAVEN_CLI_OPTS package -DskipTests
+
+image_to_mr:
+  stage: deploy
+  image: docker:24.0
+  services:
+    - docker:24.0-dind
+  before_script:
+    - docker login registry.gitlab.com -u $REGISTRY_USER -p $REGISTRY_TOKEN
+  script:
+    - docker build -f $DOCKERFILE -t $IMAGE_BASE/mr:$CI_COMMIT_SHORT_SHA .
+    - docker push $IMAGE_BASE/mr:$CI_COMMIT_SHORT_SHA
+
+  
 
