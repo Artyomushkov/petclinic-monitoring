@@ -13,5 +13,5 @@ checkstyle:
         - mvn $MAVEN_CLI_OPTS checkstyle:checkstyle
     artifacts:
         paths:
-            - target/site/checkstyle-result.xml
+            - target/checkstyle-result.xml
 
