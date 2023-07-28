@@ -34,9 +34,8 @@ image_to_mr:
   image: docker:24.0
   services:
     - docker:24.0-dind
-  before_script:
-    - echo ${REGISTRY_TOKEN} | docker login -u ${REGISTRY_USER} --password-stdin registry.gitlab.com
   script:
+    - docker login -u $REGISTRY_LOGIN -p $REGISTRY_TOKEN registry.gitlab.com
     - docker build -f $DOCKERFILE -t $IMAGE_BASE/mr:$CI_COMMIT_SHORT_SHA .
     - docker push $IMAGE_BASE/mr:$CI_COMMIT_SHORT_SHA
 
