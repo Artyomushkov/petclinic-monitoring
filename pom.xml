@@ -305,9 +305,8 @@
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-checkstyle-plugin</artifactId>
           <version>3.3.0</version>
-          <configuration>
-            <skip>true</skip>
-          </configuration>
+          <failOnViolation>false</failOnViolation>
+          <failOnError>false</failOnError>
           <reportSets>
             <reportSet>
               <reports>
@@ -317,7 +316,7 @@
           </reportSets>
         </plugin>
       </plugins>
-    </reporting>
+  </reporting>
 
   <licenses>
     <license>
