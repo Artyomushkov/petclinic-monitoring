@@ -16,18 +16,24 @@ checkstyle:
   artifacts:
     paths:
       - target/checkstyle-result.xml
+  only:
+    - merge_requests
 
 test:
   stage: test
   image: maven:3.8.5-openjdk-17
   script:
     - mvn $MAVEN_CLI_OPTS test -Dcheckstyle.skip
+  only:
+    - merge_requests
   
 build:
   stage: build
   image: maven:3.8.5-openjdk-17
   script:
     - mvn $MAVEN_CLI_OPTS package -DskipTests -Dcheckstyle.skip
+  only:
+    - merge_requests
 
 image_to_mr:
   stage: deploy
@@ -38,6 +44,21 @@ image_to_mr:
     - docker login -u $REGISTRY_LOGIN -p $REGISTRY_TOKEN registry.gitlab.com
     - docker build -f $DOCKERFILE -t $IMAGE_BASE/mr:$CI_COMMIT_SHORT_SHA .
     - docker push $IMAGE_BASE/mr:$CI_COMMIT_SHORT_SHA
+  only:
+    - merge_requests
+
+image_to_main:
+  stage: deploy
+  image: docker:24.0
+  services:
+    - docker:24.0-dind
+  script:
+    - docker login -u $REGISTRY_LOGIN -p $REGISTRY_TOKEN registry.gitlab.com
+    - docker build -f $DOCKERFILE -t $IMAGE_BASE/mr:$CI_COMMIT_SHORT_SHA .
+    - docker push $IMAGE_BASE/main:$CI_COMMIT_SHORT_SHA
+  only:
+    - main
+
 
   
 
