@@ -13,8 +13,10 @@ FROM base as build
 RUN ./mvnw package
 
 FROM eclipse-temurin:20-jre-alpine as production
-EXPOSE 8080
+EXPOSE 8080 8090
 RUN apk add dumb-init
 RUN addgroup -S javauser && adduser -S javauser -G javauser
-COPY --from=build /app/target/spring-petclinic-*.jar /app.jar
-CMD ["dumb-init", "java", "-jar", "/app.jar"]
+COPY --from=build /app/target/spring-petclinic-*.jar app.jar
+COPY jmx_prometheus_javaagent-0.19.0.jar .
+COPY config.yaml .
+CMD ["java", "-javaagent:./jmx_prometheus_javaagent-0.19.0.jar=8090:config.yaml", "-jar", "app.jar"]

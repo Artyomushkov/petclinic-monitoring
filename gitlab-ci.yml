@@ -58,7 +58,3 @@ image_to_main:
     - docker push $IMAGE_BASE/main:$CI_COMMIT_SHORT_SHA
   only:
     - main
-
-
-  
-
